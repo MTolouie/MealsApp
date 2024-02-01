@@ -10,14 +10,22 @@ const MealsOverviewScreen = ({ route, navigation }) => {
     return mealItem.categoryIds.indexOf(catId) >= 0;
   });
 
+  const mealsPressHandler = (mealId) => {
+    navigation.navigate("MealDetails", {
+      mealId: mealId,
+    });
+  };
+
   const renderMealItem = (itemData) => {
     return (
       <MealItem
+        id={itemData.item.id}
         title={itemData.item.title}
         affordability={itemData.item.affordability}
         complexity={itemData.item.complexity}
         duration={itemData.item.duration}
         imageUrl={itemData.item.imageUrl}
+        onPress={mealsPressHandler}
       />
     );
   };
