@@ -5,23 +5,40 @@ import List from "../components/MealDetails/List";
 import MealDetails from "../components/MealDetails";
 import Subtitle from "../components/MealDetails/subtitle";
 import IconButton from "../components/IconButton";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, removeFavorite } from "../store/redux/favorites";
 const MealDetailsScreen = ({ route, navigation }) => {
   const mealId = route.params.mealId;
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
+  const favoriteMealsIds = useSelector((state) => state.favoriteMeals.ids);
+  const dispatch = useDispatch();
+
+  const isFavorite = favoriteMealsIds.includes(mealId);
+
   const iconButtonPressHandler = () => {
-    console.log("Pressed");
+    if (isFavorite) {
+      dispatch(removeFavorite({ id: mealId }));
+    } else {
+      dispatch(addFavorite({ id: mealId }));
+    }
   };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <IconButton icon='heart-circle' color="white" onPress={iconButtonPressHandler} />;
+        return (
+          <IconButton
+            icon={isFavorite ? "star" : "star-outline"}
+            color="white"
+            onPress={iconButtonPressHandler}
+          />
+        );
       },
-      title:selectedMeal.title + " Details"
+      title: selectedMeal.title + " Details",
     });
-  }, []);
+  }, [isFavorite,iconButtonPressHandler]);
 
   return (
     <ScrollView style={styles.rootContainer}>
