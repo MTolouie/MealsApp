@@ -19,6 +19,7 @@ const MealDetailsScreen = ({ route, navigation }) => {
       headerRight: () => {
         return <IconButton icon='heart-circle' color="white" onPress={iconButtonPressHandler} />;
       },
+      title:selectedMeal.title + " Details"
     });
   }, []);
 
